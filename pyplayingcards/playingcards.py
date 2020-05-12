@@ -33,7 +33,7 @@ class PlayingCard:
             if suit in ["heart", "club", "diamond", "spade"]:
                 self.suit = suit + "s"
             else:
-                raise SuitError(f"'{suit1}' is not a valid suit.")
+                raise SuitError(f"'{suit}' is not a valid suit.")
 
         if not value.isdigit():
             value = value.lower()
