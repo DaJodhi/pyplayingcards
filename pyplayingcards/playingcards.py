@@ -1,6 +1,5 @@
 """A simple playing cards module to allow you to manipulate playing card objects in Python."""
 from random import choice, randint, shuffle
-from errors import SuitError, NotPlayingCard, NotPlayingCards, NoValuesGiven
 
 
 suits = ("hearts", "clubs", "diamonds", "spades")
@@ -23,8 +22,7 @@ class PlayingCard:
             value (str): The Value of the playing Card, whether it is a face card or not.
 
         Raises:
-            SuitError: If the PlayingCard is initialized with an invalid suit.
-            ValueError: If the PlayingCard is initialized with an invalid value.
+            ValueError: If the PlayingCard is initialized with an invalid value or suit.
         """
         suit = suit.lower()
         if suit in suits:
@@ -33,7 +31,7 @@ class PlayingCard:
             if suit in ["heart", "club", "diamond", "spade"]:
                 self.suit = suit + "s"
             else:
-                raise SuitError(f"'{suit}' is not a valid suit.")
+                raise ValueError(f"'{suit}' is not a valid suit.")
 
         if not value.isdigit():
             value = value.lower()
@@ -68,11 +66,11 @@ class PlayingCard:
             bool: True if the two PlayingCard objects have the same value and suit.
 
         Raises:
-            NotPlayingCard: If an object that is not of type PlayingCard is compared with.
+            ValueError: If an object that is not of type PlayingCard is compared with.
         """
         if isinstance(other, PlayingCard):
             return self.suit == other.suit and self.value == other.value
-        raise NotPlayingCard(f"\"{other}\" is not a PlayingCard object.")
+        raise ValueError(f"\"{other}\" is not a PlayingCard object.")
 
     def __lt__(self, other):
         """Lower than equality operator for PlayingCard objects.
@@ -84,11 +82,11 @@ class PlayingCard:
             bool: True if the self PlayingCard object has a lower value than the other PlayingCard object.
 
         Raises:
-            NotPlayingCard: If an object is not of type PlayingCard is compared with.
+            ValueError: If an object is not of type PlayingCard is compared with.
         """
         if isinstance(other, PlayingCard):
             return values.index(self.value) < values.index(other.value)
-        raise NotPlayingCard(f"\"{other}\" is not a PlayingCard object.")
+        raise ValueError(f"\"{other}\" is not a PlayingCard object.")
 
     def __gt__(self, other):
         """Greater than equality operator for PlayingCard objects.
@@ -100,7 +98,7 @@ class PlayingCard:
             bool: True if the self PlayingCard object has a greater value than the other PlayingCard object.
 
         Raises:
-            NotPlayingCard: If an object is not of type PlayingCard is compared with.
+            ValueError: If an object is not of type PlayingCard is compared with.
         """
         return not self.__lt__(other)
 
@@ -114,7 +112,7 @@ class PlayingCard:
             bool: True if the self PlayingCard object is not equal to the other PlayingCard object.
 
         Raises:
-            NotPlayingCard: If an object is not of type PlayingCard is compared with.
+            ValueError: If an object is not of type PlayingCard is compared with.
         """
         return not self.__eq__(other)
 
@@ -128,7 +126,7 @@ class PlayingCard:
             bool: True if the self PlayingCard object if greater than or equal to the other PlayingCard object.
 
         Raises:
-            NotPlayingCard: If an object is not of type PlayingCard is compared with.
+            ValueError: If an object is not of type PlayingCard is compared with.
         """
         return self.__gt__(other) or self.__eq__(other)
 
@@ -142,7 +140,7 @@ class PlayingCard:
             bool: True if the self PlayingCard object is greater than or equal to the other PlayingCard object.
 
         Raises:
-            NotPlayingCard: If an object is not of type PlayingCard is compared with.
+            ValueError: If an object is not of type PlayingCard is compared with.
         """
         return self.__lt__(other) or self.__eq__(other)
 
@@ -200,9 +198,9 @@ class PlayingCards:
                 randomly generated or not.
 
         Raises:
-            SuitError: If the PlayingCards object is initialized with an invalid suit.
-            NotPlayingCard: If even one of the items in values is not a PlayingCard.
-            NoValuesGiven: If no PlayingCard objects are given in values
+            ValueError: If the PlayingCards object is initialized with an invalid suit.
+            ValueError: If even one of the items in values is not a PlayingCard.
+            ValueError: If no PlayingCard objects are given in values
                 even though the random parameter is set to False.
 
         Notes:
@@ -223,7 +221,7 @@ class PlayingCards:
                     if suit in ["heart", "club", "diamond", "spade"]:
                         self.suit = suit + "s"
                     else:
-                        raise SuitError(f"'{suit1}' is not a valid suit.")
+                        raise ValueError(f"'{suit1}' is not a valid suit.")
                 self.cards = self.random_cards(self.amount, self.suit)
             else:
                 self.cards = self.random_cards(self.amount)
@@ -232,10 +230,10 @@ class PlayingCards:
             if cardvalues is not None and cardvalues != []:
                 for card in cardvalues:
                     if not isinstance(card, PlayingCard):
-                        raise NotPlayingCard("One of the items in values is not a PlayingCard object.")
+                        raise ValueError("One of the items in values is not a PlayingCard object.")
                 self.cards = cardvalues
             else:
-                raise NoValuesGiven("No values were given even though the random parameter was set to False.")
+                raise ValueError("No values were given even though the random parameter was set to False.")
 
     @staticmethod
     def random_cards(num: int, weight: str = None):
@@ -247,11 +245,14 @@ class PlayingCards:
 
         Returns:
             list: Returns a list of the randomly generated cards.
+
+        Raises:
+            ValueError: If an invalid suit is used for the weight parameter.
         """
         cards = []
         if weight is not None:
             if weight not in suits:
-                raise SuitError("Invalid suit.")
+                raise ValueError("Invalid suit.")
             dupsuits = list(suits)
             dupsuits.append(weight)
         else:
@@ -335,11 +336,11 @@ class PlayingCards:
             bool: True if the two PlayingCards objects have the same list of PlayingCard objects.
 
         Raises:
-            NotPlayingCards: If an object that is not of type PlayingCards is compared with.
+            ValueError: If an object that is not of type PlayingCards is compared with.
         """
         if isinstance(other, PlayingCards):
             return self.cards == other.cards
-        raise NotPlayingCards(f"\"{other}\" is not a PlayingCards object.")
+        raise ValueError(f"\"{other}\" is not a PlayingCards object.")
 
     def __lt__(self, other):
         """Lower than equality operator for PlayingCards objects.
@@ -351,11 +352,11 @@ class PlayingCards:
             bool: True if the self PlayingCards object has a smaller cards list than the other PlayingCards object.
 
         Raises:
-            NotPlayingCards: If an object is not of type PlayingCards is compared with.
+            ValueError: If an object is not of type PlayingCards is compared with.
         """
         if isinstance(other, PlayingCards):
             return len(self.cards) < len(other.cards)
-        raise NotPlayingCards(f"\"{other}\" is not a PlayingCards object.")
+        raise ValueError(f"\"{other}\" is not a PlayingCards object.")
 
     def __gt__(self, other):
         """Greater than equality operator for PlayingCards objects.
@@ -367,7 +368,7 @@ class PlayingCards:
             bool: True if the self PlayingCards object has a longer cards list than the other PlayingCards object.
 
         Raises:
-            NotPlayingCards: If an object is not of type PlayingCards is compared with.
+            ValueError: If an object is not of type PlayingCards is compared with.
         """
         return not self.__lt__(other)
 
@@ -381,7 +382,7 @@ class PlayingCards:
             bool: True if the self PlayingCards object does not have the same cards list as the other PlayingCards object.
 
         Raises:
-            NotPlayingCards: If an object is not of type PlayingCards is compared with.
+            ValueError: If an object is not of type PlayingCards is compared with.
         """
         return not self.__eq__(other)
 
@@ -395,7 +396,7 @@ class PlayingCards:
             bool: True if the self PlayingCards object if greater than or equal to the other PlayingCards object.
 
         Raises:
-            NotPlayingCards: If an object is not of type PlayingCards is compared with.
+            ValueError: If an object is not of type PlayingCards is compared with.
         """
         return self.__gt__(other) or self.__eq__(other)
 
@@ -409,7 +410,7 @@ class PlayingCards:
             bool: True if the self PlayingCards object is greater than or equal to the other PlayingCards object.
 
         Raises:
-            NotPlayingCards: If an object is not of type PlayingCards is compared with.
+            ValueError: If an object is not of type PlayingCards is compared with.
         """
         return self.__lt__(other) or self.__eq__(other)
 
@@ -421,9 +422,6 @@ class PlayingCards:
 
         Returns:
             PlayingCards: Returns the PlayingCards object the two would create when added.
-
-        Raises:
-            NotPlayingCards: If an object is not of type PlayingCards is compared with.
         """
         return PlayingCards(self.amount+other.amount, cardvalues=self.cards+other.cards, random=False)
 
@@ -457,22 +455,13 @@ class Deck(PlayingCards):
         return choice(self.cards)
 
 
-class Die:
-    """A class for creating and manipulating Die objects."""
+def roll(faces: int = 6):
+    """Roll a Die.
 
-    def __init__(self, faces: int = 6):
-        """Initialize the Die object.
+    Args:
+        faces (int): Default 6, the number of faces on the die.
 
-        Args:
-            faces (int): Default 6, the number of faces you want on the Die object.
-        """
-        self.faces = faces
-
-    def roll(self):
-        """Roll the Die.
-
-        Returns:
-            int: The random number generated.
-        """
-        return randint(0, self.faces)
-
+    Returns:
+        int: The random number generated.
+    """
+    return randint(0, faces)
