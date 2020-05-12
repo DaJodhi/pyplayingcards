@@ -1,5 +1,5 @@
 # __init__.py
-from pyplayingcards.playingcards import Deck, suits, values, Die, PlayingCard, PlayingCards
+from pyplayingcards.playingcards import Deck, suits, values, roll, PlayingCard, PlayingCards
 
 # Version
-__version__ = "1.0.0"
+__version__ = "1.1.4"
