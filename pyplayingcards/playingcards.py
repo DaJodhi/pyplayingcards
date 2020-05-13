@@ -1,11 +1,13 @@
 """A simple playing cards module to allow you to manipulate playing card objects in Python."""
 from random import choice, randint, shuffle
+from functools import total_ordering
 
 
 suits = ("hearts", "clubs", "diamonds", "spades")
-values = ("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace")
+values = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace")
 
 
+@total_ordering
 class PlayingCard:
     """This class defines PlayingCard objects.
 
@@ -88,62 +90,6 @@ class PlayingCard:
             return values.index(self.value) < values.index(other.value)
         raise ValueError(f"\"{other}\" is not a PlayingCard object.")
 
-    def __gt__(self, other):
-        """Greater than equality operator for PlayingCard objects.
-
-        Args:
-            other (PlayingCard): Other PlayingCard object to be compared.
-
-        Returns:
-            bool: True if the self PlayingCard object has a greater value than the other PlayingCard object.
-
-        Raises:
-            ValueError: If an object is not of type PlayingCard is compared with.
-        """
-        return not self.__lt__(other)
-
-    def __ne__(self, other):
-        """Not equal to equality operator for PlayingCard objects.
-
-        Args:
-            other (PlayingCard): Other PlayingCard object to be compared.
-
-        Returns:
-            bool: True if the self PlayingCard object is not equal to the other PlayingCard object.
-
-        Raises:
-            ValueError: If an object is not of type PlayingCard is compared with.
-        """
-        return not self.__eq__(other)
-
-    def __ge__(self, other):
-        """Greater than or equal to equality operator for PlayingCard objects.
-
-        Args:
-            other (PlayingCard): Other PlayingCard object to be compared.
-
-        Returns:
-            bool: True if the self PlayingCard object if greater than or equal to the other PlayingCard object.
-
-        Raises:
-            ValueError: If an object is not of type PlayingCard is compared with.
-        """
-        return self.__gt__(other) or self.__eq__(other)
-
-    def __le__(self, other):
-        """Lower than or equal to equality operator for PlayingCard objects.
-
-        Args:
-            other (PlayingCard): Other PlayingCard object to be compared.
-
-        Returns:
-            bool: True if the self PlayingCard object is greater than or equal to the other PlayingCard object.
-
-        Raises:
-            ValueError: If an object is not of type PlayingCard is compared with.
-        """
-        return self.__lt__(other) or self.__eq__(other)
-
     def __iter__(self):
         """Allow PlayingCard objects to be converted to dictionaries, lists and tuples.
 
@@ -176,6 +122,7 @@ class PlayingCard:
             return "red"
 
 
+@total_ordering
 class PlayingCards:
     """PlayingCards can be used for a certain amount of randomly generated cards or user-defined cards.
 
@@ -358,62 +305,6 @@ class PlayingCards:
             return len(self.cards) < len(other.cards)
         raise ValueError(f"\"{other}\" is not a PlayingCards object.")
 
-    def __gt__(self, other):
-        """Greater than equality operator for PlayingCards objects.
-
-        Args:
-            other (PlayingCards): Other PlayingCards object to be compared.
-
-        Returns:
-            bool: True if the self PlayingCards object has a longer cards list than the other PlayingCards object.
-
-        Raises:
-            ValueError: If an object is not of type PlayingCards is compared with.
-        """
-        return not self.__lt__(other)
-
-    def __ne__(self, other):
-        """Not equal to equality operator for PlayingCards objects.
-
-        Args:
-            other (PlayingCards): Other PlayingCards object to be compared.
-
-        Returns:
-            bool: True if the self PlayingCards object does not have the same cards list as the other PlayingCards object.
-
-        Raises:
-            ValueError: If an object is not of type PlayingCards is compared with.
-        """
-        return not self.__eq__(other)
-
-    def __ge__(self, other):
-        """Greater than or equal to equality operator for PlayingCards objects.
-
-        Args:
-            other (PlayingCards): Other PlayingCards object to be compared.
-
-        Returns:
-            bool: True if the self PlayingCards object if greater than or equal to the other PlayingCards object.
-
-        Raises:
-            ValueError: If an object is not of type PlayingCards is compared with.
-        """
-        return self.__gt__(other) or self.__eq__(other)
-
-    def __le__(self, other):
-        """Lower than or equal to equality operator for PlayingCards objects.
-
-        Args:
-            other (PlayingCards): Other PlayingCards object to be compared.
-
-        Returns:
-            bool: True if the self PlayingCards object is greater than or equal to the other PlayingCards object.
-
-        Raises:
-            ValueError: If an object is not of type PlayingCards is compared with.
-        """
-        return self.__lt__(other) or self.__eq__(other)
-
     def __add__(self, other):
         """Add two PlayingCards objects together.
 
@@ -465,3 +356,4 @@ def roll(faces: int = 6):
         int: The random number generated.
     """
     return randint(0, faces)
+
